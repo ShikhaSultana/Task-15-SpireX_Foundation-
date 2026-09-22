@@ -1,0 +1,1219 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Westbrook College — Departments, Courses, Faculty &amp; Events</title>
+  <meta name="description" content="Westbrook College management portal — explore departments, courses, faculty, students, events and admissions." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+/* ============================================================
+   Westbrook College — College Management Frontend
+   Pure HTML / CSS / JS  ·  Light + Dark themes
+   ============================================================ */
+
+:root {
+  --bg: #f5f7fb;
+  --bg-2: #ffffff;
+  --surface: #ffffff;
+  --surface-2: #f0f3f9;
+  --border: #e2e7f0;
+  --text: #101828;
+  --muted: #5b6577;
+  --faint: #8a93a6;
+
+  --brand: #2b3a8f;          /* deep indigo */
+  --brand-2: #3f51b5;
+  --accent: #c99a2e;         /* academic gold */
+  --accent-2: #e0b64a;
+  --teal: #0f9d8f;
+
+  --ok: #12805c;
+  --warn: #b7791f;
+  --danger: #c0392b;
+
+  --shadow-sm: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 3px rgba(16, 24, 40, .08);
+  --shadow: 0 10px 30px -12px rgba(16, 24, 40, .22);
+  --shadow-lg: 0 30px 60px -20px rgba(16, 24, 40, .35);
+  --radius: 16px;
+  --radius-sm: 11px;
+  --maxw: 1180px;
+  --ease: cubic-bezier(.22, .61, .36, 1);
+}
+
+html[data-theme="dark"] {
+  --bg: #0b0f1a;
+  --bg-2: #0f1524;
+  --surface: #131a2b;
+  --surface-2: #1a2236;
+  --border: #26304a;
+  --text: #eef2fb;
+  --muted: #a6b0c6;
+  --faint: #7c879e;
+
+  --brand: #7d8cf0;
+  --brand-2: #9aa6f7;
+  --accent: #e6bd5c;
+  --accent-2: #f0cf7c;
+  --teal: #2fd0bd;
+
+  --shadow-sm: 0 1px 2px rgba(0, 0, 0, .4);
+  --shadow: 0 14px 34px -14px rgba(0, 0, 0, .7);
+  --shadow-lg: 0 34px 70px -24px rgba(0, 0, 0, .8);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  transition: background .35s var(--ease), color .35s var(--ease);
+}
+
+body.no-scroll { overflow: hidden; }
+
+img { max-width: 100%; display: block; }
+
+a { color: inherit; text-decoration: none; }
+
+button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+
+h1, h2, h3, h4 { margin: 0; line-height: 1.15; letter-spacing: -.02em; }
+
+.wrap { width: 100%; max-width: var(--maxw); margin: 0 auto; padding: 0 22px; }
+
+/* ---------------- Header ---------------- */
+.nav {
+  position: sticky; top: 0; z-index: 60;
+  background: color-mix(in srgb, var(--bg-2) 82%, transparent);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--border);
+}
+.nav-inner {
+  display: flex; align-items: center; gap: 18px;
+  height: 70px;
+}
+.logo { display: flex; align-items: center; gap: 11px; font-weight: 800; font-size: 1.12rem; letter-spacing: -.02em; }
+.logo .mark {
+  width: 40px; height: 40px; border-radius: 12px; flex: none;
+  display: grid; place-items: center; color: #fff; font-size: 1.15rem;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  box-shadow: 0 8px 18px -8px color-mix(in srgb, var(--brand) 80%, transparent);
+}
+.logo small { display: block; font-size: .66rem; font-weight: 600; letter-spacing: .14em; color: var(--faint); text-transform: uppercase; }
+
+.nav-links { display: flex; align-items: center; gap: 4px; margin-left: auto; }
+.nav-links a {
+  padding: 9px 13px; border-radius: 9px; font-size: .92rem; font-weight: 600; color: var(--muted);
+  transition: background .2s, color .2s;
+}
+.nav-links a:hover, .nav-links a.active { color: var(--text); background: var(--surface-2); }
+
+.nav-actions { display: flex; align-items: center; gap: 10px; }
+.icon-btn {
+  width: 42px; height: 42px; border-radius: 11px; display: grid; place-items: center;
+  border: 1px solid var(--border); background: var(--surface); font-size: 1.05rem;
+  transition: transform .2s var(--ease), background .2s, border-color .2s;
+}
+.icon-btn:hover { transform: translateY(-2px); border-color: color-mix(in srgb, var(--brand) 40%, var(--border)); }
+
+.cta-btn {
+  padding: 11px 20px; border-radius: 11px; font-weight: 700; font-size: .92rem; color: #fff;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+  box-shadow: 0 12px 24px -12px color-mix(in srgb, var(--brand) 90%, transparent);
+  transition: transform .2s var(--ease), box-shadow .2s;
+}
+.cta-btn:hover { transform: translateY(-2px); box-shadow: 0 18px 30px -14px color-mix(in srgb, var(--brand) 90%, transparent); }
+
+.menu-btn { display: none; }
+
+/* ---------------- Hero ---------------- */
+.hero {
+  position: relative; overflow: hidden;
+  background:
+    radial-gradient(1100px 520px at 82% -10%, color-mix(in srgb, var(--accent) 26%, transparent), transparent 60%),
+    radial-gradient(900px 500px at 8% 0%, color-mix(in srgb, var(--brand) 30%, transparent), transparent 55%),
+    linear-gradient(160deg, var(--brand) 0%, #1c2a6e 55%, #16204f 100%);
+  color: #fff;
+  padding: 74px 0 66px;
+}
+.hero::after {
+  content: ""; position: absolute; inset: 0;
+  background-image: radial-gradient(rgba(255,255,255,.10) 1px, transparent 1px);
+  background-size: 26px 26px; opacity: .5; pointer-events: none;
+}
+.hero .wrap { position: relative; z-index: 2; }
+.hero-grid { display: grid; grid-template-columns: 1.15fr .85fr; gap: 46px; align-items: center; }
+
+.eyebrow {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 7px 14px; border-radius: 999px; font-size: .76rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase;
+  background: rgba(255,255,255,.14); border: 1px solid rgba(255,255,255,.24); color: #fff;
+}
+.hero h1 { font-size: clamp(2.1rem, 4.6vw, 3.4rem); margin: 20px 0 16px; font-weight: 800; }
+.hero h1 .hl { color: var(--accent-2); }
+.hero p.lead { font-size: 1.06rem; color: rgba(255,255,255,.86); max-width: 560px; margin: 0 0 26px; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 12px; }
+.btn {
+  padding: 13px 24px; border-radius: 12px; font-weight: 700; font-size: .95rem;
+  transition: transform .2s var(--ease), background .2s, box-shadow .2s;
+}
+.btn.primary { background: var(--accent); color: #241a00; box-shadow: 0 14px 28px -14px rgba(201,154,46,.9); }
+.btn.primary:hover { transform: translateY(-2px); background: var(--accent-2); }
+.btn.ghost { background: rgba(255,255,255,.10); color: #fff; border: 1px solid rgba(255,255,255,.30); }
+.btn.ghost:hover { transform: translateY(-2px); background: rgba(255,255,255,.18); }
+
+.hero-card {
+  background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.22);
+  border-radius: 20px; padding: 22px; backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-lg);
+}
+.hero-card h3 { font-size: 1rem; margin-bottom: 14px; display: flex; align-items: center; gap: 8px; }
+.hero-card .mini { display: grid; gap: 10px; }
+.hero-card .mini .row {
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  padding: 11px 13px; border-radius: 12px; background: rgba(255,255,255,.08); font-size: .9rem;
+}
+.hero-card .mini .row b { font-weight: 700; }
+.hero-card .mini .row .tag { font-size: .72rem; font-weight: 700; padding: 3px 9px; border-radius: 999px; background: rgba(255,255,255,.16); }
+
+.stats {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 46px;
+}
+.stat {
+  background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.18);
+  border-radius: 15px; padding: 18px 20px;
+}
+.stat b { display: block; font-size: 1.9rem; font-weight: 800; letter-spacing: -.03em; }
+.stat span { font-size: .82rem; color: rgba(255,255,255,.78); }
+
+/* ---------------- Sections ---------------- */
+.sec { padding: 74px 0; }
+.sec.alt { background: var(--bg-2); }
+.sec-head { max-width: 680px; margin-bottom: 38px; }
+.kicker {
+  display: inline-block; font-size: .76rem; font-weight: 800; letter-spacing: .16em; text-transform: uppercase;
+  color: var(--brand); margin-bottom: 12px;
+}
+html[data-theme="dark"] .kicker { color: var(--brand-2); }
+.sec-head h2 { font-size: clamp(1.6rem, 3vw, 2.3rem); font-weight: 800; }
+.sec-head p { color: var(--muted); margin: 12px 0 0; font-size: 1.02rem; }
+
+/* ---------------- Departments ---------------- */
+.dept-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.dept {
+  position: relative; overflow: hidden;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 24px 22px; box-shadow: var(--shadow-sm);
+  transition: transform .25s var(--ease), box-shadow .25s, border-color .25s;
+  cursor: pointer;
+}
+.dept:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--brand) 40%, var(--border)); }
+.dept .ic {
+  width: 52px; height: 52px; border-radius: 14px; display: grid; place-items: center; font-size: 1.5rem;
+  background: color-mix(in srgb, var(--brand) 12%, transparent); color: var(--brand); margin-bottom: 16px;
+}
+html[data-theme="dark"] .dept .ic { background: color-mix(in srgb, var(--brand) 22%, transparent); color: var(--brand-2); }
+.dept h3 { font-size: 1.08rem; margin-bottom: 6px; }
+.dept p { color: var(--muted); font-size: .9rem; margin: 0 0 14px; }
+.dept .meta { display: flex; gap: 8px; flex-wrap: wrap; }
+.dept .meta span {
+  font-size: .74rem; font-weight: 700; padding: 4px 10px; border-radius: 999px;
+  background: var(--surface-2); color: var(--muted); border: 1px solid var(--border);
+}
+.dept .go { position: absolute; top: 20px; right: 20px; color: var(--faint); font-size: 1.1rem; transition: transform .25s, color .25s; }
+.dept:hover .go { transform: translate(3px, -3px); color: var(--brand); }
+
+/* ---------------- Toolbar (search + filters) ---------------- */
+.toolbar {
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center; margin-bottom: 26px;
+}
+.search {
+  position: relative; flex: 1 1 280px; min-width: 220px;
+}
+.search input {
+  width: 100%; padding: 13px 16px 13px 44px; border-radius: 12px; font-size: .95rem;
+  background: var(--surface); border: 1px solid var(--border); color: var(--text);
+  transition: border-color .2s, box-shadow .2s;
+}
+.search input:focus { outline: none; border-color: var(--brand); box-shadow: 0 0 0 4px color-mix(in srgb, var(--brand) 16%, transparent); }
+.search .si { position: absolute; left: 15px; top: 50%; transform: translateY(-50%); color: var(--faint); }
+
+.chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.chip {
+  padding: 9px 15px; border-radius: 999px; font-size: .85rem; font-weight: 600;
+  background: var(--surface); border: 1px solid var(--border); color: var(--muted);
+  transition: all .2s var(--ease);
+}
+.chip:hover { color: var(--text); border-color: color-mix(in srgb, var(--brand) 40%, var(--border)); }
+.chip.active { background: var(--brand); border-color: var(--brand); color: #fff; }
+html[data-theme="dark"] .chip.active { color: #0b0f1a; }
+
+/* ---------------- Courses ---------------- */
+.course-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.course {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 22px; box-shadow: var(--shadow-sm); display: flex; flex-direction: column;
+  transition: transform .25s var(--ease), box-shadow .25s, border-color .25s;
+}
+.course:hover { transform: translateY(-4px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--brand) 35%, var(--border)); }
+.course .top { display: flex; align-items: center; justify-content: space-between; gap: 10px; margin-bottom: 12px; }
+.course .code {
+  font-size: .74rem; font-weight: 800; letter-spacing: .06em; padding: 5px 10px; border-radius: 8px;
+  background: color-mix(in srgb, var(--brand) 12%, transparent); color: var(--brand);
+}
+html[data-theme="dark"] .course .code { background: color-mix(in srgb, var(--brand) 22%, transparent); color: var(--brand-2); }
+.course .lvl { font-size: .74rem; font-weight: 700; color: var(--faint); }
+.course h3 { font-size: 1.05rem; margin-bottom: 8px; }
+.course p { color: var(--muted); font-size: .9rem; margin: 0 0 16px; flex: 1; }
+.course .foot { display: flex; align-items: center; justify-content: space-between; gap: 10px; padding-top: 14px; border-top: 1px solid var(--border); }
+.course .foot .dept-name { font-size: .82rem; font-weight: 600; color: var(--muted); }
+.course .foot .cr { font-size: .82rem; font-weight: 700; color: var(--text); }
+.seats { font-size: .74rem; font-weight: 700; padding: 4px 9px; border-radius: 999px; }
+.seats.open { background: color-mix(in srgb, var(--ok) 16%, transparent); color: var(--ok); }
+.seats.low { background: color-mix(in srgb, var(--warn) 18%, transparent); color: var(--warn); }
+.seats.full { background: color-mix(in srgb, var(--danger) 16%, transparent); color: var(--danger); }
+
+.empty {
+  grid-column: 1 / -1; text-align: center; padding: 50px 20px; color: var(--muted);
+  background: var(--surface); border: 1px dashed var(--border); border-radius: var(--radius);
+}
+.empty .big { font-size: 2rem; margin-bottom: 8px; }
+
+/* ---------------- Faculty ---------------- */
+.fac-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.fac {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; box-shadow: var(--shadow-sm);
+  transition: transform .25s var(--ease), box-shadow .25s, border-color .25s;
+}
+.fac:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--brand) 35%, var(--border)); }
+.fac .photo { aspect-ratio: 1 / 1; overflow: hidden; background: var(--surface-2); }
+.fac .photo img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+.fac:hover .photo img { transform: scale(1.06); }
+.fac .body { padding: 16px 18px 18px; }
+.fac .dept-tag { font-size: .72rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--brand); }
+html[data-theme="dark"] .fac .dept-tag { color: var(--brand-2); }
+.fac h3 { font-size: 1.02rem; margin: 6px 0 3px; }
+.fac .role { font-size: .85rem; color: var(--muted); }
+.fac .exp { font-size: .82rem; color: var(--faint); margin-top: 8px; }
+.fac .mail {
+  display: inline-flex; align-items: center; gap: 6px; margin-top: 12px; font-size: .82rem; font-weight: 600;
+  color: var(--brand); word-break: break-all;
+}
+html[data-theme="dark"] .fac .mail { color: var(--brand-2); }
+
+/* ---------------- Students ---------------- */
+.students-wrap { display: grid; grid-template-columns: 1.05fr .95fr; gap: 34px; align-items: start; }
+.stud-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; }
+.stud {
+  display: flex; gap: 14px; align-items: center;
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  padding: 16px; box-shadow: var(--shadow-sm);
+  transition: transform .25s var(--ease), box-shadow .25s;
+}
+.stud:hover { transform: translateY(-3px); box-shadow: var(--shadow); }
+.stud img { width: 58px; height: 58px; border-radius: 50%; object-fit: cover; flex: none; border: 2px solid color-mix(in srgb, var(--brand) 30%, transparent); }
+.stud h4 { font-size: .96rem; }
+.stud .prog { font-size: .8rem; color: var(--muted); }
+.stud .badge { font-size: .72rem; font-weight: 700; color: var(--accent); margin-top: 3px; }
+html[data-theme="dark"] .stud .badge { color: var(--accent-2); }
+
+.life-card {
+  background: linear-gradient(160deg, color-mix(in srgb, var(--brand) 92%, #000), #1c2a6e);
+  color: #fff; border-radius: 20px; padding: 28px; box-shadow: var(--shadow);
+}
+.life-card h3 { font-size: 1.25rem; margin-bottom: 6px; }
+.life-card p { color: rgba(255,255,255,.82); font-size: .92rem; margin: 0 0 20px; }
+.clubs { display: grid; gap: 10px; }
+.club {
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  padding: 12px 14px; border-radius: 12px; background: rgba(255,255,255,.10); border: 1px solid rgba(255,255,255,.16);
+  font-size: .9rem;
+}
+.club .n { display: flex; align-items: center; gap: 10px; font-weight: 600; }
+.club .c { font-size: .78rem; color: rgba(255,255,255,.72); }
+
+/* ---------------- Events ---------------- */
+.ev-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.ev {
+  background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; box-shadow: var(--shadow-sm); cursor: pointer;
+  transition: transform .25s var(--ease), box-shadow .25s, border-color .25s;
+  display: flex; flex-direction: column;
+}
+.ev:hover { transform: translateY(-5px); box-shadow: var(--shadow); border-color: color-mix(in srgb, var(--accent) 45%, var(--border)); }
+.ev .banner { position: relative; aspect-ratio: 16 / 9; overflow: hidden; background: var(--surface-2); }
+.ev .banner img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s var(--ease); }
+.ev:hover .banner img { transform: scale(1.06); }
+.ev .date {
+  position: absolute; top: 12px; left: 12px; text-align: center;
+  background: var(--surface); border-radius: 12px; padding: 8px 12px; box-shadow: var(--shadow-sm);
+}
+.ev .date b { display: block; font-size: 1.25rem; font-weight: 800; line-height: 1; }
+.ev .date span { font-size: .68rem; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--muted); }
+.ev .cat {
+  position: absolute; top: 12px; right: 12px; font-size: .72rem; font-weight: 700;
+  padding: 5px 11px; border-radius: 999px; background: var(--accent); color: #241a00;
+}
+.ev .body { padding: 18px; display: flex; flex-direction: column; flex: 1; }
+.ev h3 { font-size: 1.05rem; margin-bottom: 8px; }
+.ev p { color: var(--muted); font-size: .88rem; margin: 0 0 14px; flex: 1; }
+.ev .meta { display: flex; flex-wrap: wrap; gap: 12px; font-size: .82rem; color: var(--faint); }
+.ev .meta span { display: inline-flex; align-items: center; gap: 6px; }
+
+/* ---------------- Admissions ---------------- */
+.adm-wrap { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.step {
+  position: relative; background: var(--surface); border: 1px solid var(--border);
+  border-radius: var(--radius); padding: 26px 22px; box-shadow: var(--shadow-sm);
+}
+.step .num {
+  width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+  font-weight: 800; font-size: 1.1rem; color: #fff; margin-bottom: 16px;
+  background: linear-gradient(135deg, var(--brand), var(--brand-2));
+}
+.step h3 { font-size: 1.02rem; margin-bottom: 8px; }
+.step p { color: var(--muted); font-size: .9rem; margin: 0; }
+
+.adm-cta {
+  margin-top: 30px; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px;
+  background: linear-gradient(135deg, color-mix(in srgb, var(--accent) 90%, #000), var(--accent));
+  color: #241a00; border-radius: 18px; padding: 26px 30px; box-shadow: var(--shadow);
+}
+.adm-cta h3 { font-size: 1.3rem; }
+.adm-cta p { margin: 4px 0 0; font-size: .92rem; opacity: .85; }
+.adm-cta .btn.dark { background: #241a00; color: #fff; }
+.adm-cta .btn.dark:hover { transform: translateY(-2px); }
+
+/* ---------------- Footer ---------------- */
+.foot { background: var(--bg-2); border-top: 1px solid var(--border); padding: 54px 0 26px; }
+.foot-grid { display: grid; grid-template-columns: 1.4fr 1fr 1fr 1fr; gap: 30px; }
+.foot h4 { font-size: .82rem; letter-spacing: .12em; text-transform: uppercase; color: var(--faint); margin-bottom: 14px; }
+.foot ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 9px; }
+.foot ul li { color: var(--muted); font-size: .9rem; cursor: pointer; transition: color .2s; }
+.foot ul li:hover { color: var(--brand); }
+.foot .about p { color: var(--muted); font-size: .9rem; margin: 14px 0 0; max-width: 320px; }
+.foot-bottom {
+  margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--border);
+  display: flex; flex-wrap: wrap; gap: 12px; align-items: center; justify-content: space-between;
+  color: var(--faint); font-size: .85rem;
+}
+
+/* ---------------- Modal ---------------- */
+.modal {
+  position: fixed; inset: 0; z-index: 100; display: none;
+  align-items: center; justify-content: center; padding: 20px;
+}
+.modal.open { display: flex; }
+.modal-backdrop { position: absolute; inset: 0; background: rgba(8, 12, 24, .62); backdrop-filter: blur(4px); }
+.modal-card {
+  position: relative; z-index: 2; width: 100%; max-width: 560px; max-height: 90vh; overflow: auto;
+  background: var(--surface); border: 1px solid var(--border); border-radius: 20px;
+  box-shadow: var(--shadow-lg); animation: pop .3s var(--ease);
+}
+@keyframes pop { from { opacity: 0; transform: translateY(16px) scale(.97); } to { opacity: 1; transform: none; } }
+.modal-card .m-banner { aspect-ratio: 16 / 8; overflow: hidden; background: var(--surface-2); }
+.modal-card .m-banner img { width: 100%; height: 100%; object-fit: cover; }
+.modal-card .m-body { padding: 24px; }
+.modal-card .m-cat { font-size: .74rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; color: var(--accent); }
+html[data-theme="dark"] .modal-card .m-cat { color: var(--accent-2); }
+.modal-card h3 { font-size: 1.4rem; margin: 8px 0 12px; }
+.modal-card p { color: var(--muted); font-size: .95rem; margin: 0 0 18px; }
+.m-rows { display: grid; gap: 10px; margin-bottom: 20px; }
+.m-rows .r { display: flex; justify-content: space-between; gap: 14px; padding: 11px 14px; border-radius: 11px; background: var(--surface-2); font-size: .9rem; }
+.m-rows .r .k { color: var(--muted); }
+.m-rows .r .v { font-weight: 700; text-align: right; }
+.m-close {
+  position: absolute; top: 14px; right: 14px; z-index: 3; width: 38px; height: 38px; border-radius: 50%;
+  display: grid; place-items: center; background: var(--surface); border: 1px solid var(--border); font-size: 1.1rem;
+}
+.m-close:hover { background: var(--surface-2); }
+
+/* ---------------- Toast ---------------- */
+.toast {
+  position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, 120%);
+  z-index: 200; padding: 13px 20px; border-radius: 12px; font-weight: 600; font-size: .9rem;
+  background: var(--text); color: var(--bg); box-shadow: var(--shadow-lg);
+  transition: transform .35s var(--ease); max-width: 90vw;
+}
+.toast.show { transform: translate(-50%, 0); }
+
+/* ---------------- Reveal animation ---------------- */
+.reveal { opacity: 0; transform: translateY(22px); transition: opacity .6s var(--ease), transform .6s var(--ease); }
+.reveal.in { opacity: 1; transform: none; }
+
+/* ---------------- Responsive ---------------- */
+@media (max-width: 1024px) {
+  .hero-grid { grid-template-columns: 1fr; gap: 34px; }
+  .dept-grid { grid-template-columns: repeat(2, 1fr); }
+  .course-grid { grid-template-columns: repeat(2, 1fr); }
+  .fac-grid { grid-template-columns: repeat(3, 1fr); }
+  .ev-grid { grid-template-columns: repeat(2, 1fr); }
+  .adm-wrap { grid-template-columns: repeat(2, 1fr); }
+  .students-wrap { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr 1fr; }
+}
+
+@media (max-width: 860px) {
+  .nav-links {
+    position: fixed; inset: 70px 0 auto 0; flex-direction: column; align-items: stretch; gap: 4px;
+    background: var(--bg-2); border-bottom: 1px solid var(--border); padding: 14px 22px 22px;
+    transform: translateY(-130%); transition: transform .35s var(--ease); box-shadow: var(--shadow);
+  }
+  .nav-links.open { transform: translateY(0); }
+  .nav-links a { padding: 13px 14px; font-size: 1rem; }
+  .menu-btn { display: grid; }
+  .nav-actions .cta-btn { display: none; }
+  .stats { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 640px) {
+  .sec { padding: 56px 0; }
+  .dept-grid, .course-grid, .fac-grid, .ev-grid, .adm-wrap, .stud-grid { grid-template-columns: 1fr; }
+  .foot-grid { grid-template-columns: 1fr; }
+  .hero { padding: 54px 0 50px; }
+  .adm-cta { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 380px) {
+  .stats { grid-template-columns: 1fr; }
+  .logo small { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+  html { scroll-behavior: auto; }
+  .reveal { opacity: 1; transform: none; }
+}
+
+  </style>
+</head>
+<body>
+
+  <!-- ================= HEADER ================= -->
+  <header class="nav">
+    <div class="wrap nav-inner">
+      <a href="#top" class="logo">
+        <span class="mark">🎓</span>
+        <span>Westbrook College<small>Est. 1962</small></span>
+      </a>
+
+      <nav class="nav-links" id="navLinks">
+        <a href="#departments" data-nav>Departments</a>
+        <a href="#courses" data-nav>Courses</a>
+        <a href="#faculty" data-nav>Faculty</a>
+        <a href="#students" data-nav>Students</a>
+        <a href="#events" data-nav>Events</a>
+        <a href="#admissions" data-nav>Admissions</a>
+      </nav>
+
+      <div class="nav-actions">
+        <button class="icon-btn" id="themeBtn" aria-label="Toggle dark mode" title="Toggle theme">🌙</button>
+        <button class="cta-btn" data-scroll="admissions">Apply Now</button>
+        <button class="icon-btn menu-btn" id="menuBtn" aria-label="Open menu" aria-expanded="false">☰</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- ================= HERO ================= -->
+  <section class="hero" id="top">
+    <div class="wrap">
+      <div class="hero-grid">
+        <div>
+          <span class="eyebrow">✦ Admissions open for 2026</span>
+          <h1>Where curious minds become <span class="hl">tomorrow's leaders.</span></h1>
+          <p class="lead">Explore our departments, browse courses, meet the faculty, and discover campus life — all in one place. Everything you need to plan your journey at Westbrook.</p>
+          <div class="hero-cta">
+            <button class="btn primary" data-scroll="courses">Explore Courses →</button>
+            <button class="btn ghost" data-scroll="departments">View Departments</button>
+          </div>
+        </div>
+
+        <aside class="hero-card">
+          <h3>📅 This Week on Campus</h3>
+          <div class="mini" id="heroMini"></div>
+        </aside>
+      </div>
+
+      <div class="stats">
+        <div class="stat"><b>12,400+</b><span>Students enrolled</span></div>
+        <div class="stat"><b>480</b><span>Faculty members</span></div>
+        <div class="stat"><b>8</b><span>Departments</span></div>
+        <div class="stat"><b>140+</b><span>Courses offered</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= DEPARTMENTS ================= -->
+  <section class="sec" id="departments">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">Academics</span>
+        <h2>Our Departments</h2>
+        <p>Eight schools of study, each with dedicated faculty, modern labs, and industry-aligned curricula. Click a department to see its courses.</p>
+      </div>
+      <div class="dept-grid" id="deptGrid"></div>
+    </div>
+  </section>
+
+  <!-- ================= COURSES ================= -->
+  <section class="sec alt" id="courses">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">Curriculum</span>
+        <h2>Courses &amp; Programs</h2>
+        <p>Search by name or code, or filter by department. Each course lists credits, level, and current seat availability.</p>
+      </div>
+
+      <div class="toolbar reveal">
+        <label class="search">
+          <span class="si">🔍</span>
+          <input type="search" id="courseSearch" placeholder="Search courses by name or code…" aria-label="Search courses" />
+        </label>
+        <div class="chips" id="courseChips"></div>
+      </div>
+
+      <div class="course-grid" id="courseGrid"></div>
+    </div>
+  </section>
+
+  <!-- ================= FACULTY ================= -->
+  <section class="sec" id="faculty">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">Our People</span>
+        <h2>Meet the Faculty</h2>
+        <p>Distinguished teachers and researchers who mentor students inside the classroom and beyond.</p>
+      </div>
+      <div class="chips reveal" id="facChips" style="margin-bottom:26px"></div>
+      <div class="fac-grid" id="facGrid"></div>
+    </div>
+  </section>
+
+  <!-- ================= STUDENTS ================= -->
+  <section class="sec alt" id="students">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">Student Life</span>
+        <h2>Students &amp; Campus Community</h2>
+        <p>From student leaders to clubs and societies, Westbrook is a vibrant community of learners and doers.</p>
+      </div>
+
+      <div class="students-wrap">
+        <div>
+          <div class="stud-grid" id="studGrid"></div>
+        </div>
+        <aside class="life-card reveal">
+          <h3>Clubs &amp; Societies</h3>
+          <p>Over 60 student-run organisations — find your people.</p>
+          <div class="clubs" id="clubList"></div>
+        </aside>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EVENTS ================= -->
+  <section class="sec" id="events">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">What's On</span>
+        <h2>Upcoming Events</h2>
+        <p>Talks, festivals, sports, and workshops happening across campus. Click any event for full details.</p>
+      </div>
+      <div class="ev-grid" id="evGrid"></div>
+    </div>
+  </section>
+
+  <!-- ================= ADMISSIONS ================= -->
+  <section class="sec alt" id="admissions">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <span class="kicker">Join Us</span>
+        <h2>Admissions in Four Steps</h2>
+        <p>A simple, transparent process from application to enrolment.</p>
+      </div>
+
+      <div class="adm-wrap" id="admGrid"></div>
+
+      <div class="adm-cta reveal">
+        <div>
+          <h3>Ready to apply for Fall 2026?</h3>
+          <p>Applications close on 30 June 2026. Scholarships available for merit and need.</p>
+        </div>
+        <button class="btn dark" id="applyBtn">Start Your Application →</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= FOOTER ================= -->
+  <footer class="foot">
+    <div class="wrap">
+      <div class="foot-grid">
+        <div class="about">
+          <a href="#top" class="logo"><span class="mark">🎓</span><span>Westbrook College</span></a>
+          <p>A leading institution for science, technology, business and the arts — shaping capable, curious graduates since 1962.</p>
+        </div>
+        <div>
+          <h4>Academics</h4>
+          <ul>
+            <li data-scroll="departments">Departments</li>
+            <li data-scroll="courses">Courses</li>
+            <li data-scroll="faculty">Faculty</li>
+            <li data-scroll="admissions">Admissions</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Campus</h4>
+          <ul>
+            <li data-scroll="students">Student Life</li>
+            <li data-scroll="events">Events</li>
+            <li data-scroll="events">Library</li>
+            <li data-scroll="events">Sports Centre</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li>📍 24 Elmwood Avenue, Westbrook</li>
+            <li>📞 +1 (555) 018-2200</li>
+            <li>✉️ admissions@westbrook.edu</li>
+          </ul>
+        </div>
+      </div>
+      <div class="foot-bottom">
+        <span>© <span id="year"></span> Westbrook College. All rights reserved.</span>
+        <span>Built with HTML, CSS &amp; JavaScript · Demo project</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ================= EVENT MODAL ================= -->
+  <div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+    <div class="modal-backdrop" id="modalBackdrop"></div>
+    <div class="modal-card">
+      <button class="m-close" id="modalClose" aria-label="Close">✕</button>
+      <div class="m-banner"><img id="mImg" src="" alt="" /></div>
+      <div class="m-body">
+        <span class="m-cat" id="mCat"></span>
+        <h3 id="mTitle"></h3>
+        <p id="mDesc"></p>
+        <div class="m-rows" id="mRows"></div>
+        <button class="btn primary" id="mRegister" style="width:100%">Register Interest</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ================= TOAST ================= -->
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+/* ============================================================
+   Westbrook College — College Management Frontend
+   Vanilla JavaScript (ES6+)
+   ============================================================ */
+
+/* ---------------- Helpers ---------------- */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+/* ---------------- Data: Departments ---------------- */
+const DEPARTMENTS = [
+  { id: "cse", name: "Computer Science & Engineering", icon: "💻", head: "Dr. Alan Whitfield",
+    desc: "Software, AI, data science and cybersecurity with hands-on labs.", students: 2140, courses: 24 },
+  { id: "ece", name: "Electrical & Electronics", icon: "⚡", head: "Dr. Meera Krishnan",
+    desc: "Circuits, embedded systems, power and communication engineering.", students: 1480, courses: 19 },
+  { id: "mech", name: "Mechanical Engineering", icon: "⚙️", head: "Dr. Robert Hale",
+    desc: "Thermodynamics, robotics, CAD and advanced manufacturing.", students: 1320, courses: 18 },
+  { id: "civil", name: "Civil Engineering", icon: "🏗️", head: "Dr. Sofia Alvarez",
+    desc: "Structures, transport, environmental and geotechnical engineering.", students: 980, courses: 16 },
+  { id: "biz", name: "Business & Management", icon: "📈", head: "Dr. Grace Okafor",
+    desc: "Finance, marketing, entrepreneurship and business analytics.", students: 2260, courses: 22 },
+  { id: "sci", name: "Basic Sciences", icon: "🔬", head: "Dr. Henry Cole",
+    desc: "Physics, chemistry, mathematics and life sciences foundations.", students: 1150, courses: 20 },
+  { id: "arts", name: "Arts & Humanities", icon: "🎨", head: "Dr. Lena Moreau",
+    desc: "Literature, history, philosophy, languages and fine arts.", students: 870, courses: 15 },
+  { id: "design", name: "Design & Media", icon: "🖌️", head: "Dr. Omar Haddad",
+    desc: "Graphic design, UX, animation and digital media production.", students: 760, courses: 14 },
+];
+
+/* ---------------- Data: Courses ---------------- */
+const COURSES = [
+  { code: "CS101", title: "Introduction to Programming", dept: "cse", credits: 4, level: "Foundation", seats: 42, cap: 60,
+    desc: "Problem solving with Python — variables, loops, functions and data structures." },
+  { code: "CS204", title: "Data Structures & Algorithms", dept: "cse", credits: 4, level: "Core", seats: 8, cap: 55,
+    desc: "Arrays, trees, graphs, sorting, searching and complexity analysis." },
+  { code: "CS310", title: "Machine Learning", dept: "cse", credits: 3, level: "Advanced", seats: 0, cap: 40,
+    desc: "Supervised and unsupervised learning, model evaluation and neural networks." },
+  { code: "CS330", title: "Cybersecurity Essentials", dept: "cse", credits: 3, level: "Advanced", seats: 15, cap: 45,
+    desc: "Threat models, cryptography, network defence and ethical hacking basics." },
+  { code: "EC201", title: "Digital Electronics", dept: "ece", credits: 4, level: "Core", seats: 22, cap: 50,
+    desc: "Logic gates, combinational and sequential circuits, and microcontrollers." },
+  { code: "EC305", title: "Signals & Systems", dept: "ece", credits: 3, level: "Advanced", seats: 11, cap: 45,
+    desc: "Continuous and discrete signals, Fourier analysis and system response." },
+  { code: "ME210", title: "Engineering Thermodynamics", dept: "mech", credits: 4, level: "Core", seats: 30, cap: 50,
+    desc: "Laws of thermodynamics, cycles, entropy and energy systems." },
+  { code: "ME320", title: "Robotics & Automation", dept: "mech", credits: 3, level: "Advanced", seats: 6, cap: 35,
+    desc: "Kinematics, sensors, actuators and industrial automation control." },
+  { code: "CE220", title: "Structural Analysis", dept: "civil", credits: 4, level: "Core", seats: 18, cap: 45,
+    desc: "Analysis of beams, trusses and frames under static loading." },
+  { code: "CE340", title: "Sustainable Infrastructure", dept: "civil", credits: 3, level: "Advanced", seats: 24, cap: 40,
+    desc: "Green materials, water systems and resilient urban design." },
+  { code: "BA110", title: "Principles of Management", dept: "biz", credits: 3, level: "Foundation", seats: 55, cap: 80,
+    desc: "Planning, organising, leading and controlling in modern organisations." },
+  { code: "BA250", title: "Financial Accounting", dept: "biz", credits: 4, level: "Core", seats: 12, cap: 60,
+    desc: "Recording, reporting and interpreting financial statements." },
+  { code: "BA360", title: "Digital Marketing", dept: "biz", credits: 3, level: "Advanced", seats: 9, cap: 50,
+    desc: "SEO, content, social media and analytics-driven campaigns." },
+  { code: "PH101", title: "University Physics I", dept: "sci", credits: 4, level: "Foundation", seats: 40, cap: 70,
+    desc: "Mechanics, waves, thermodynamics and an introduction to modern physics." },
+  { code: "MA201", title: "Linear Algebra", dept: "sci", credits: 3, level: "Core", seats: 28, cap: 60,
+    desc: "Vectors, matrices, eigenvalues and applications to engineering." },
+  { code: "CH150", title: "Organic Chemistry", dept: "sci", credits: 4, level: "Core", seats: 20, cap: 50,
+    desc: "Structure, reactions and synthesis of carbon-based compounds." },
+  { code: "EN120", title: "World Literature", dept: "arts", credits: 3, level: "Foundation", seats: 35, cap: 55,
+    desc: "Critical reading of global literary traditions across centuries." },
+  { code: "HI210", title: "Modern World History", dept: "arts", credits: 3, level: "Core", seats: 26, cap: 50,
+    desc: "Revolutions, empires and global change from 1800 to the present." },
+  { code: "DS130", title: "Foundations of Graphic Design", dept: "design", credits: 3, level: "Foundation", seats: 14, cap: 40,
+    desc: "Typography, colour theory, composition and visual communication." },
+  { code: "DS260", title: "User Experience Design", dept: "design", credits: 3, level: "Core", seats: 5, cap: 35,
+    desc: "Research, wireframing, prototyping and usability testing." },
+];
+
+/* ---------------- Data: Faculty ---------------- */
+const FACULTY = [
+  { name: "Dr. Alan Whitfield", dept: "cse", role: "Professor & Head", exp: "22 yrs · AI & Systems",
+    img: "https://images.unsplash.com/photo-1560250097-0b93528c311a?w=500&q=80", mail: "a.whitfield@westbrook.edu" },
+  { name: "Dr. Meera Krishnan", dept: "ece", role: "Professor", exp: "18 yrs · VLSI Design",
+    img: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=500&q=80", mail: "m.krishnan@westbrook.edu" },
+  { name: "Dr. Robert Hale", dept: "mech", role: "Professor", exp: "20 yrs · Robotics",
+    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=500&q=80", mail: "r.hale@westbrook.edu" },
+  { name: "Dr. Sofia Alvarez", dept: "civil", role: "Associate Professor", exp: "14 yrs · Structures",
+    img: "https://images.unsplash.com/photo-1580489944761-15a19d654956?w=500&q=80", mail: "s.alvarez@westbrook.edu" },
+  { name: "Dr. Grace Okafor", dept: "biz", role: "Professor & Head", exp: "19 yrs · Finance",
+    img: "https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=500&q=80", mail: "g.okafor@westbrook.edu" },
+  { name: "Dr. Henry Cole", dept: "sci", role: "Professor", exp: "24 yrs · Theoretical Physics",
+    img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=500&q=80", mail: "h.cole@westbrook.edu" },
+  { name: "Dr. Lena Moreau", dept: "arts", role: "Associate Professor", exp: "12 yrs · Comparative Literature",
+    img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=500&q=80", mail: "l.moreau@westbrook.edu" },
+  { name: "Dr. Omar Haddad", dept: "design", role: "Assistant Professor", exp: "10 yrs · UX & Media",
+    img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=500&q=80", mail: "o.haddad@westbrook.edu" },
+  { name: "Dr. Priya Raman", dept: "cse", role: "Associate Professor", exp: "13 yrs · Data Science",
+    img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=500&q=80", mail: "p.raman@westbrook.edu" },
+  { name: "Dr. James Carter", dept: "biz", role: "Assistant Professor", exp: "9 yrs · Marketing",
+    img: "https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=500&q=80", mail: "j.carter@westbrook.edu" },
+  { name: "Dr. Aisha Bello", dept: "sci", role: "Associate Professor", exp: "15 yrs · Organic Chemistry",
+    img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=500&q=80", mail: "a.bello@westbrook.edu" },
+  { name: "Dr. Daniel Frost", dept: "ece", role: "Assistant Professor", exp: "8 yrs · Embedded Systems",
+    img: "https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=500&q=80", mail: "d.frost@westbrook.edu" },
+];
+
+/* ---------------- Data: Students ---------------- */
+const STUDENTS = [
+  { name: "Aarav Sharma", prog: "B.Tech · Computer Science", badge: "🏆 Dean's List 2025",
+    img: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=200&q=80" },
+  { name: "Emily Zhang", prog: "BBA · Business Analytics", badge: "⭐ Student Council President",
+    img: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=200&q=80" },
+  { name: "Marcus Johnson", prog: "B.Tech · Mechanical", badge: "🤖 Robotics Club Lead",
+    img: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=200&q=80" },
+  { name: "Fatima Noor", prog: "B.Sc · Physics", badge: "🔬 Research Scholar",
+    img: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=200&q=80" },
+  { name: "Liam O'Brien", prog: "B.Des · UX Design", badge: "🎨 Design Fest Winner",
+    img: "https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=200&q=80" },
+  { name: "Sara Ahmed", prog: "B.Tech · Electronics", badge: "⚡ IEEE Chapter Head",
+    img: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=200&q=80" },
+];
+
+const CLUBS = [
+  { n: "💻 Coding Club", c: "420 members" },
+  { n: "🤖 Robotics Society", c: "180 members" },
+  { n: "🎭 Drama & Theatre", c: "150 members" },
+  { n: "📸 Photography Club", c: "210 members" },
+  { n: "🏀 Sports Association", c: "640 members" },
+  { n: "🌱 Eco Warriors", c: "260 members" },
+];
+
+/* ---------------- Data: Events ---------------- */
+const EVENTS = [
+  { title: "TechFest 2026 — Annual Innovation Summit", cat: "Technology", day: "14", mon: "Mar",
+    date: "Saturday, 14 March 2026", time: "9:00 AM – 6:00 PM", venue: "Main Auditorium",
+    img: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=800&q=80",
+    desc: "A full-day summit with keynote speakers, a 24-hour hackathon, robotics demos and a startup pitch arena. Open to all departments." },
+  { title: "Spring Cultural Festival", cat: "Culture", day: "28", mon: "Mar",
+    date: "Saturday, 28 March 2026", time: "4:00 PM – 10:00 PM", venue: "Central Lawn",
+    img: "https://images.unsplash.com/photo-1511578314322-379afb476865?w=800&q=80",
+    desc: "Music, dance, food stalls and an art exhibition celebrating the diversity of our student community. Free entry for students." },
+  { title: "Career & Internship Fair", cat: "Careers", day: "05", mon: "Apr",
+    date: "Sunday, 5 April 2026", time: "10:00 AM – 4:00 PM", venue: "Exhibition Hall",
+    img: "https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=800&q=80",
+    desc: "Meet 80+ recruiters from tech, finance, design and engineering firms. Bring your résumé — on-the-spot interviews available." },
+  { title: "Inter-College Sports Meet", cat: "Sports", day: "18", mon: "Apr",
+    date: "Saturday, 18 April 2026", time: "8:00 AM – 5:00 PM", venue: "Sports Complex",
+    img: "https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?w=800&q=80",
+    desc: "Track, field, basketball and swimming events against 12 visiting colleges. Cheer on the Westbrook Wolves!" },
+  { title: "Research Symposium on AI & Society", cat: "Research", day: "02", mon: "May",
+    date: "Saturday, 2 May 2026", time: "11:00 AM – 3:00 PM", venue: "Science Block, Hall B",
+    img: "https://images.unsplash.com/photo-1524178232363-1fb2b075b655?w=800&q=80",
+    desc: "Faculty and postgraduate students present cutting-edge work on machine learning, ethics and sustainable computing." },
+  { title: "Alumni Homecoming Gala", cat: "Community", day: "16", mon: "May",
+    date: "Saturday, 16 May 2026", time: "6:00 PM – 11:00 PM", venue: "Grand Dining Hall",
+    img: "https://images.unsplash.com/photo-1519452575417-564c1401ecc0?w=800&q=80",
+    desc: "Reconnect with graduates across six decades for an evening of dinner, awards and live music. Formal attire requested." },
+];
+
+/* ---------------- Data: Admissions ---------------- */
+const ADM_STEPS = [
+  { n: "1", t: "Create your account", d: "Register on the admissions portal with your basic details and a valid email address." },
+  { n: "2", t: "Submit your application", d: "Choose your programme, upload transcripts and pay the application fee online." },
+  { n: "3", t: "Entrance & interview", d: "Take the aptitude assessment and attend a short interview with faculty." },
+  { n: "4", t: "Accept your offer", d: "Receive your offer letter, confirm your seat and complete enrolment." },
+];
+
+/* ---------------- State ---------------- */
+let activeCourseDept = "all";
+let activeFacDept = "all";
+let courseQuery = "";
+
+/* ---------------- Toast ---------------- */
+let toastTimer;
+function toast(msg) {
+  const el = $("#toast");
+  el.textContent = msg;
+  el.classList.add("show");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.classList.remove("show"), 2600);
+}
+
+/* ---------------- Theme ---------------- */
+function applyTheme(theme) {
+  document.documentElement.setAttribute("data-theme", theme);
+  $("#themeBtn").textContent = theme === "dark" ? "☀️" : "🌙";
+  try { localStorage.setItem("wb-theme", theme); } catch (e) {}
+}
+function initTheme() {
+  let saved = null;
+  try { saved = localStorage.getItem("wb-theme"); } catch (e) {}
+  const prefersDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+  applyTheme(saved || (prefersDark ? "dark" : "light"));
+}
+
+/* ---------------- Render: Departments ---------------- */
+function renderDepartments() {
+  $("#deptGrid").innerHTML = DEPARTMENTS.map((d) => `
+    <article class="dept reveal" data-dept="${d.id}">
+      <span class="go">↗</span>
+      <div class="ic">${d.icon}</div>
+      <h3>${d.name}</h3>
+      <p>${d.desc}</p>
+      <div class="meta">
+        <span>👥 ${d.students.toLocaleString()} students</span>
+        <span>📚 ${d.courses} courses</span>
+      </div>
+    </article>`).join("");
+}
+
+/* ---------------- Render: Course chips ---------------- */
+function renderCourseChips() {
+  const chips = [{ id: "all", name: "All Departments" }, ...DEPARTMENTS.map((d) => ({ id: d.id, name: d.name.split(" ")[0] }))];
+  $("#courseChips").innerHTML = chips.map((c) =>
+    `<button class="chip ${c.id === activeCourseDept ? "active" : ""}" data-cdept="${c.id}">${c.name}</button>`
+  ).join("");
+}
+
+/* ---------------- Render: Courses ---------------- */
+function seatClass(seats) {
+  if (seats === 0) return "full";
+  if (seats <= 10) return "low";
+  return "open";
+}
+function seatLabel(seats) {
+  if (seats === 0) return "Waitlist only";
+  return `${seats} seats left`;
+}
+function renderCourses() {
+  const q = courseQuery.trim().toLowerCase();
+  const list = COURSES.filter((c) => {
+    const deptOk = activeCourseDept === "all" || c.dept === activeCourseDept;
+    const qOk = !q || c.title.toLowerCase().includes(q) || c.code.toLowerCase().includes(q);
+    return deptOk && qOk;
+  });
+
+  const grid = $("#courseGrid");
+  if (!list.length) {
+    grid.innerHTML = `<div class="empty"><div class="big">🔍</div><b>No courses found</b><p>Try a different search term or department.</p></div>`;
+    return;
+  }
+  grid.innerHTML = list.map((c) => {
+    const dept = DEPARTMENTS.find((d) => d.id === c.dept);
+    return `
+    <article class="course reveal">
+      <div class="top">
+        <span class="code">${c.code}</span>
+        <span class="lvl">${c.level}</span>
+      </div>
+      <h3>${c.title}</h3>
+      <p>${c.desc}</p>
+      <div class="foot">
+        <span class="dept-name">${dept ? dept.icon + " " + dept.name.split(" ")[0] : ""}</span>
+        <span class="cr">${c.credits} credits</span>
+      </div>
+      <div style="margin-top:12px">
+        <span class="seats ${seatClass(c.seats)}">${seatLabel(c.seats)}</span>
+      </div>
+    </article>`;
+  }).join("");
+  observeReveals();
+}
+
+/* ---------------- Render: Faculty ---------------- */
+function renderFacChips() {
+  const chips = [{ id: "all", name: "All Faculty" }, ...DEPARTMENTS.map((d) => ({ id: d.id, name: d.name.split(" ")[0] }))];
+  $("#facChips").innerHTML = chips.map((c) =>
+    `<button class="chip ${c.id === activeFacDept ? "active" : ""}" data-fdept="${c.id}">${c.name}</button>`
+  ).join("");
+}
+function renderFaculty() {
+  const list = FACULTY.filter((f) => activeFacDept === "all" || f.dept === activeFacDept);
+  const grid = $("#facGrid");
+  if (!list.length) {
+    grid.innerHTML = `<div class="empty"><div class="big">👩‍🏫</div><b>No faculty in this department yet</b></div>`;
+    return;
+  }
+  grid.innerHTML = list.map((f) => {
+    const dept = DEPARTMENTS.find((d) => d.id === f.dept);
+    return `
+    <article class="fac reveal">
+      <div class="photo"><img src="${f.img}" alt="${f.name}" loading="lazy" /></div>
+      <div class="body">
+        <span class="dept-tag">${dept ? dept.name.split(" ")[0] : ""}</span>
+        <h3>${f.name}</h3>
+        <div class="role">${f.role}</div>
+        <div class="exp">${f.exp}</div>
+        <a class="mail" href="mailto:${f.mail}">✉️ ${f.mail}</a>
+      </div>
+    </article>`;
+  }).join("");
+  observeReveals();
+}
+
+/* ---------------- Render: Students & Clubs ---------------- */
+function renderStudents() {
+  $("#studGrid").innerHTML = STUDENTS.map((s) => `
+    <article class="stud reveal">
+      <img src="${s.img}" alt="${s.name}" loading="lazy" />
+      <div>
+        <h4>${s.name}</h4>
+        <div class="prog">${s.prog}</div>
+        <div class="badge">${s.badge}</div>
+      </div>
+    </article>`).join("");
+  $("#clubList").innerHTML = CLUBS.map((c) => `
+    <div class="club"><span class="n">${c.n}</span><span class="c">${c.c}</span></div>`).join("");
+}
+
+/* ---------------- Render: Events ---------------- */
+function renderEvents() {
+  $("#evGrid").innerHTML = EVENTS.map((e, i) => `
+    <article class="ev reveal" data-ev="${i}">
+      <div class="banner">
+        <img src="${e.img}" alt="${e.title}" loading="lazy" />
+        <div class="date"><b>${e.day}</b><span>${e.mon}</span></div>
+        <span class="cat">${e.cat}</span>
+      </div>
+      <div class="body">
+        <h3>${e.title}</h3>
+        <p>${e.desc.slice(0, 96)}…</p>
+        <div class="meta">
+          <span>🕒 ${e.time.split("–")[0].trim()}</span>
+          <span>📍 ${e.venue}</span>
+        </div>
+      </div>
+    </article>`).join("");
+  observeReveals();
+}
+
+/* ---------------- Render: Hero mini + Admissions ---------------- */
+function renderHeroMini() {
+  $("#heroMini").innerHTML = EVENTS.slice(0, 4).map((e) => `
+    <div class="row">
+      <span><b>${e.day} ${e.mon}</b> · ${e.title.split("—")[0].trim()}</span>
+      <span class="tag">${e.cat}</span>
+    </div>`).join("");
+}
+function renderAdmissions() {
+  $("#admGrid").innerHTML = ADM_STEPS.map((s) => `
+    <article class="step reveal">
+      <div class="num">${s.n}</div>
+      <h3>${s.t}</h3>
+      <p>${s.d}</p>
+    </article>`).join("");
+}
+
+/* ---------------- Event Modal ---------------- */
+function openEvent(i) {
+  const e = EVENTS[i];
+  if (!e) return;
+  $("#mImg").src = e.img;
+  $("#mImg").alt = e.title;
+  $("#mCat").textContent = e.cat;
+  $("#mTitle").textContent = e.title;
+  $("#mDesc").textContent = e.desc;
+  $("#mRows").innerHTML = `
+    <div class="r"><span class="k">Date</span><span class="v">${e.date}</span></div>
+    <div class="r"><span class="k">Time</span><span class="v">${e.time}</span></div>
+    <div class="r"><span class="k">Venue</span><span class="v">${e.venue}</span></div>
+    <div class="r"><span class="k">Category</span><span class="v">${e.cat}</span></div>`;
+  $("#modal").classList.add("open");
+  document.body.classList.add("no-scroll");
+}
+function closeModal() {
+  $("#modal").classList.remove("open");
+  document.body.classList.remove("no-scroll");
+}
+
+/* ---------------- Reveal on scroll ---------------- */
+let io;
+function observeReveals() {
+  if (!("IntersectionObserver" in window)) {
+    $$(".reveal").forEach((el) => el.classList.add("in"));
+    return;
+  }
+  if (!io) {
+    io = new IntersectionObserver((entries) => {
+      entries.forEach((en) => {
+        if (en.isIntersecting) { en.target.classList.add("in"); io.unobserve(en.target); }
+      });
+    }, { threshold: 0.12, rootMargin: "0px 0px -40px 0px" });
+  }
+  $$(".reveal:not(.in)").forEach((el) => io.observe(el));
+}
+
+/* ---------------- Scroll helper ---------------- */
+function scrollToId(id) {
+  const el = document.getElementById(id);
+  if (el) el.scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+/* ---------------- Init ---------------- */
+function init() {
+  initTheme();
+  renderDepartments();
+  renderCourseChips();
+  renderCourses();
+  renderFacChips();
+  renderFaculty();
+  renderStudents();
+  renderEvents();
+  renderHeroMini();
+  renderAdmissions();
+  $("#year").textContent = new Date().getFullYear();
+  observeReveals();
+
+  /* Department card → filter courses */
+  $("#deptGrid").addEventListener("click", (e) => {
+    const card = e.target.closest("[data-dept]");
+    if (!card) return;
+    activeCourseDept = card.dataset.dept;
+    renderCourseChips();
+    renderCourses();
+    scrollToId("courses");
+    const d = DEPARTMENTS.find((x) => x.id === activeCourseDept);
+    toast(`Showing courses in ${d ? d.name : "department"}`);
+  });
+
+  /* Course chips */
+  $("#courseChips").addEventListener("click", (e) => {
+    const chip = e.target.closest("[data-cdept]");
+    if (!chip) return;
+    activeCourseDept = chip.dataset.cdept;
+    renderCourseChips();
+    renderCourses();
+  });
+
+  /* Course search */
+  $("#courseSearch").addEventListener("input", (e) => {
+    courseQuery = e.target.value;
+    renderCourses();
+  });
+
+  /* Faculty chips */
+  $("#facChips").addEventListener("click", (e) => {
+    const chip = e.target.closest("[data-fdept]");
+    if (!chip) return;
+    activeFacDept = chip.dataset.fdept;
+    renderFacChips();
+    renderFaculty();
+  });
+
+  /* Events → modal */
+  $("#evGrid").addEventListener("click", (e) => {
+    const card = e.target.closest("[data-ev]");
+    if (!card) return;
+    openEvent(Number(card.dataset.ev));
+  });
+  $("#modalClose").addEventListener("click", closeModal);
+  $("#modalBackdrop").addEventListener("click", closeModal);
+  $("#mRegister").addEventListener("click", () => {
+    closeModal();
+    toast("Thanks! We'll email you the event details.");
+  });
+  document.addEventListener("keydown", (e) => { if (e.key === "Escape") closeModal(); });
+
+  /* Theme toggle */
+  $("#themeBtn").addEventListener("click", () => {
+    const cur = document.documentElement.getAttribute("data-theme");
+    applyTheme(cur === "dark" ? "light" : "dark");
+  });
+
+  /* Mobile menu */
+  $("#menuBtn").addEventListener("click", () => {
+    const links = $("#navLinks");
+    const open = links.classList.toggle("open");
+    $("#menuBtn").setAttribute("aria-expanded", String(open));
+    $("#menuBtn").textContent = open ? "✕" : "☰";
+  });
+  $$("#navLinks a").forEach((a) =>
+    a.addEventListener("click", () => {
+      $("#navLinks").classList.remove("open");
+      $("#menuBtn").setAttribute("aria-expanded", "false");
+      $("#menuBtn").textContent = "☰";
+    })
+  );
+
+  /* Scroll buttons */
+  $$("[data-scroll]").forEach((b) =>
+    b.addEventListener("click", () => scrollToId(b.dataset.scroll))
+  );
+
+  /* Apply button */
+  $("#applyBtn").addEventListener("click", () =>
+    toast("Application portal opening soon — this is a demo.")
+  );
+
+  /* Active nav highlight on scroll */
+  const sections = $$("section[id]");
+  window.addEventListener("scroll", () => {
+    const y = window.scrollY + 120;
+    let current = "";
+    sections.forEach((s) => { if (s.offsetTop <= y) current = s.id; });
+    $$("#navLinks a").forEach((a) =>
+      a.classList.toggle("active", a.getAttribute("href") === "#" + current)
+    );
+  }, { passive: true });
+}
+
+document.addEventListener("DOMContentLoaded", init);
+
+  </script>
+</body>
+</html>
